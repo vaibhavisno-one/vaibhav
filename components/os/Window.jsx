@@ -9,20 +9,20 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onFocus(win.id); }}
-      className={`absolute rounded-[12px] overflow-hidden flex flex-col border ${isActive ? "border-white/15 shadow-[0_18px_50px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.08)]" : "border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.25)] opacity-[0.98]"}`}
+      className={`absolute rounded-[14px] overflow-hidden flex flex-col border ${isActive ? "border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)]" : "border-white/[0.07] shadow-[0_12px_36px_rgba(0,0,0,0.45)] opacity-[0.99]"}`}
       style={{
         left: win.isMaximized ? 0 : win.x,
         top: win.isMaximized ? 28 : win.y,
         width: win.w,
         height: win.h,
         zIndex: win.z,
-        background: "#ffffff",
+        background: "#0f0f12",
         transition: win.isMaximized ? "all 200ms cubic-bezier(0.2,0,0,1)" : "box-shadow 150ms, opacity 150ms",
       }}
     >
-      {/* Vaibhav OS title bar — custom controls on right, not mac traffic lights */}
+      {/* Vaibhav OS title bar — dark only */}
       <div
-        className="h-9 bg-[#f8f8f8] dark:bg-[#2f2f2f] flex items-center px-3 gap-2 shrink-0 border-b border-black/10 dark:border-white/5 select-none"
+        className="h-9 bg-[#1c1c1f] flex items-center px-3 gap-2 shrink-0 border-b border-white/[0.06] select-none"
         onMouseDown={(e) => {
           if (win.isMaximized) return;
           onFocus(win.id);
@@ -37,14 +37,14 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
           <span className="shrink-0 flex items-center justify-center">
             <AppIcon appId={win.appId} size={20} />
           </span>
-          <span className="text-[13px] font-medium text-[#2b2b2b] dark:text-white/85 truncate tracking-tight">{win.title}</span>
+          <span className="text-[13px] font-medium text-white/90 truncate tracking-tight">{win.title}</span>
         </div>
 
-        {/* Right: custom window controls — monochrome, not colored circles */}
+        {/* Right: custom window controls — dark only */}
         <div className="flex items-center gap-1">
           <button
             onClick={() => onMinimize(win.id)}
-            className="w-7 h-7 rounded-md hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition"
+            className="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition"
             aria-label="Minimize"
             title="Minimize"
           >
@@ -52,7 +52,7 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
           </button>
           <button
             onClick={() => onMaximize(win.id)}
-            className="w-7 h-7 rounded-md hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition"
+            className="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition"
             aria-label="Maximize"
             title={win.isMaximized ? "Restore" : "Maximize"}
           >
@@ -60,7 +60,7 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
           </button>
           <button
             onClick={() => onClose(win.id)}
-            className="w-7 h-7 rounded-md hover:bg-[#ff3b30] hover:text-white flex items-center justify-center text-black/60 dark:text-white/60 transition"
+            className="w-7 h-7 rounded-md hover:bg-[#ff3b30] hover:text-white flex items-center justify-center text-white/60 transition"
             aria-label="Close"
             title="Close"
           >
@@ -69,7 +69,7 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
         </div>
       </div>
 
-      <div className="flex-1 overflow-hidden bg-white dark:bg-[#1e1e1e] relative">{children}</div>
+      <div className="flex-1 overflow-hidden bg-[#0f0f12] relative">{children}</div>
 
       {!win.isMaximized && (
         <>
@@ -81,7 +81,7 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
           <div className="absolute top-0 right-0 w-3 h-3 cursor-ne-resize" onMouseDown={(e) => onResizeStart(e, win, "ne")} />
           <div className="absolute bottom-0 left-0 w-3 h-3 cursor-sw-resize" onMouseDown={(e) => onResizeStart(e, win, "sw")} />
           <div className="absolute bottom-0 right-0 w-2.5 h-2.5 cursor-se-resize opacity-40 hover:opacity-80" onMouseDown={(e) => onResizeStart(e, win, "se")}>
-            <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-black/20 dark:border-white/20 rounded-br" />
+            <div className="absolute bottom-1 right-1 w-2 h-2 border-r-2 border-b-2 border-white/20 rounded-br" />
           </div>
         </>
       )}

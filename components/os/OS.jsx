@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WALLPAPERS, getWallpaperStyle } from "@/lib/os/wallpapers";
 import { APP_DEFS, getApp } from "@/lib/os/appDefs";
+import { sounds, setMasterVolume } from "@/lib/os/sounds";
 import AppIcon from "./AppIcon";
 import TopBar from "./TopBar";
 import Dock from "./Dock";
@@ -54,9 +55,9 @@ export default function OS() {
   const [desktopReady, setDesktopReady] = useState(false);
   const [time, setTime] = useState(new Date());
   const [wallpaperIdx, setWallpaperIdx] = useState(0);
-  const [settings, setSettings] = useState({ theme: "dark", iconSize: 48, dockSize: 51, brightness: 100, blurDesktop: true });
-  const [volume, setVolume] = useState(55);
-  const [brightness, setBrightness] = useState(45);
+  const [settings, setSettings] = useState({ theme: "dark", iconSize: 48, dockSize: 51, brightness: 105, blurDesktop: true });
+  const [volume, setVolume] = useState(78);
+  const [brightness, setBrightness] = useState(100);
 
   const [windows, setWindows] = useState([]);
   const [nextId, setNextId] = useState(1);
@@ -177,12 +178,14 @@ export default function OS() {
   const wallpaperStyle = getWallpaperStyle(wallpaper);
 
   const openApp = useCallback((appId, opts = {}) => {
+    try { sounds.open(volume); } catch {}
     const norm = appId;
     setWindows((ws) => {
       const existing = ws.find((w) => w.appId === norm || w.appId === appId);
       if (existing) {
         setActiveId(existing.id);
         setNextZ((z) => z + 1);
+        try { sounds.click(volume); } catch {}
         return ws.map((w) => (w.id === existing.id ? { ...w, isMinimized: false, z: nextZ } : w));
       }
       const def = getApp(norm) || getApp(appId) || { name: appId };
@@ -198,25 +201,27 @@ export default function OS() {
       setLauncherOpen(false);
       return [...ws, nw];
     });
-  }, [nextId, nextZ]);
+  }, [nextId, nextZ, volume]);
 
   const openBrowser = useCallback((url) => {
     openApp("browser", { url });
     setWindows((ws) => ws.map((w) => (w.appId === "browser" ? { ...w, payload: { url } } : w)));
   }, [openApp]);
 
-  const closeWindow = (id) => setWindows((ws) => ws.filter((w) => w.id !== id));
-  const minimizeWindow = (id) => setWindows((ws) => ws.map((w) => (w.id === id ? { ...w, isMinimized: true } : w)));
-  const maximizeWindow = (id) =>
-    setWindows((ws) => ws.map((w) => {
+  const closeWindow = (id) => { try { sounds.close(volume); } catch {} setWindows((ws) => ws.filter((w) => w.id !== id)); };
+  const minimizeWindow = (id) => { try { sounds.toggle(volume); } catch {} setWindows((ws) => ws.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))); };
+  const maximizeWindow = (id) => {
+    try { sounds.toggle(volume); } catch {}
+    return setWindows((ws) => ws.map((w) => {
       if (w.id !== id) return w;
       if (w.isMaximized) {
         const p = w.prev || { x: 100, y: 80, w: 900, h: 560 };
         return { ...w, isMaximized: false, x: p.x, y: p.y, w: p.w, h: p.h, prev: null };
       }
       return { ...w, isMaximized: true, prev: { x: w.x, y: w.y, w: w.w, h: w.h }, x: 0, y: 28, w: window.innerWidth, h: window.innerHeight - 28 };
-    }));
+    })); };
   const focusWindow = (id) => {
+    try { sounds.click(volume); } catch {}
     setActiveId(id);
     setNextZ((z) => {
       setWindows((ws) => ws.map((w) => (w.id === id ? { ...w, z } : w)));
@@ -272,7 +277,7 @@ export default function OS() {
   }, [windows, dockHover, settings.dockSize]);
   const activeAppName = useMemo(() => {
     const win = windows.find((w) => w.id === activeId && !w.isMinimized);
-    if (!win) return "Files";
+    if (!win) return "Projects";
     const def = getApp(win.appId);
     return def?.name || win.title;
   }, [windows, activeId]);
@@ -303,6 +308,8 @@ export default function OS() {
     fetch("/api/blogs").then((r) => r.json()).then((d) => setBlogs(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
+  useEffect(() => { setMasterVolume(volume); }, [volume]);
+
   const timeStr = time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "2-digit" }) + " " + time.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
 
   if (bootPhase === "boot") return <BootScreen containerRef={containerRef} />;
@@ -312,13 +319,13 @@ export default function OS() {
   return (
     <div
       ref={containerRef}
-      className={`w-screen h-screen relative overflow-hidden flex flex-col select-none ${settings.theme === "light" ? "bg-[#e8e8ed]" : "bg-[#1a1a1e]"}`}
-      style={{ filter: `brightness(${brightness}%)` }}
+      className="w-screen h-screen relative overflow-hidden flex flex-col select-none bg-[#0f0f12] dark"
+      style={{ filter: `brightness(${Math.min(130, Math.max(75, brightness))}%)` }}
       onContextMenu={onDesktopContext}
       onClick={() => { setNotificationOpen(false); setControlOpen(false); setWallpaperMenu(null); }}
     >
       <motion.div key={wallpaperIdx} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="absolute inset-0" style={wallpaperStyle} />
-      <div className="absolute inset-0 bg-black/[0.04] pointer-events-none" />
+      <div className="absolute inset-0 bg-black/[0.06] pointer-events-none" />
 
       <TopBar
         timeStr={timeStr}
@@ -330,9 +337,11 @@ export default function OS() {
         onCalendar={handleNotification}
         onQuick={handleControl}
         onSearch={handleSearch}
-        onBattery={() => { showToast("Battery 100% • Charging • 4h 12m left"); setControlOpen(true); }}
-        onWifi={() => handleControl()}
+        onBattery={() => { try{ sounds.pop(volume);}catch{} showToast("Battery 100% • Charging • 4h 12m left"); setControlOpen(true); }}
+        onWifi={() => { try{ sounds.click(volume);}catch{} handleControl();}}
         showToast={showToast}
+        volume={volume}
+        setVolume={setVolume}
       />
 
       <AnimatePresence>

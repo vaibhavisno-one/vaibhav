@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { APP_DEFS, DOCK_ORDER } from "@/lib/os/appDefs";
 import AppIcon from "./AppIcon";
+import { sounds } from "@/lib/os/sounds";
 
 export default function Dock({ settings, windows, activeId, onOpenApp, onOverview, overviewOpen, anyMaximized }) {
   const [hovered, setHovered] = useState(null);
@@ -34,8 +35,8 @@ export default function Dock({ settings, windows, activeId, onOpenApp, onOvervie
           return (
             <motion.button
               key={app.id}
-              onMouseEnter={() => setHovered(i)}
-              onClick={() => onOpenApp(app.id)}
+              onMouseEnter={() => { setHovered(i); try{ sounds.hover(60);}catch{}}}
+              onClick={() => { try{ sounds.pop(70);}catch{} onOpenApp(app.id); }}
               whileTap={{ scale: 0.88, y: 2 }}
               className="relative flex flex-col items-center justify-end group"
               style={{ width: size + 10, height: settings.dockSize }}
@@ -61,8 +62,8 @@ export default function Dock({ settings, windows, activeId, onOpenApp, onOvervie
 
         <motion.button
           whileTap={{ scale: 0.88 }}
-          onMouseEnter={() => setHovered(ordered.length)}
-          onClick={onOverview}
+          onMouseEnter={() => { setHovered(ordered.length); try{ sounds.hover(60);}catch{}}}
+          onClick={() => { try{ sounds.click(65);}catch{} onOverview(); }}
           className="relative flex flex-col items-center justify-end group"
           style={{ width: settings.iconSize * 0.82 + 10, height: settings.dockSize }}
           title="Search Apps"

@@ -34,20 +34,16 @@ function Linkified({ text, onOpenBrowser, onOpenApp }) {
             e.stopPropagation();
             const raw = p.t;
             if (raw.includes("Resume.pdf") || raw === "/Resume.pdf") {
-              // open resume in browser app + also new tab fallback
               onOpenBrowser?.("/Resume.pdf");
-              window.open("/Resume.pdf","_blank");
             } else if (raw.includes("kumar1305vaibhav@gmail.com")) {
               window.open("mailto:kumar1305vaibhav@gmail.com","_blank");
             } else if (raw.startsWith("http")) {
               onOpenBrowser?.(raw);
-              window.open(raw,"_blank");
             } else if (raw.startsWith("github.com") || raw.startsWith("linkedin.com")) {
               const url = `https://${raw}`;
               onOpenBrowser?.(url);
-              window.open(url,"_blank");
             } else {
-              window.open(raw,"_blank");
+              onOpenBrowser?.(raw);
             }
           }}
           className="text-[#60a5fa] hover:text-[#93c5fd] underline underline-offset-2 decoration-[#60a5fa]/50 hover:decoration-[#60a5fa] cursor-pointer"

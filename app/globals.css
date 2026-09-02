@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1a1a1e;
+  --background: #0f0f12;
   --foreground: #ededed;
-  --topbar: #0f0f0f;
-  --dock-bg: rgba(40,40,43,0.92);
-  --window-bg: #1e1e1e;
+  --topbar: #0f0f12;
+  --dock-bg: rgba(20,20,23,0.92);
+  --window-bg: #0f0f12;
 }
+html { color-scheme: dark; }
 
 * {
   scrollbar-width: thin;

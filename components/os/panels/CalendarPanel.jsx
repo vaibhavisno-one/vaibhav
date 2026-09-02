@@ -41,16 +41,16 @@ export default function NotificationsPanel({ onClose, onOpenApp, showToast }) {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 420, opacity: 0 }}
       transition={{ type: "spring", damping: 28, stiffness: 320 }}
-      className="absolute top-7 right-2 w-[360px] max-h-[calc(100vh-48px)] bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[18px] shadow-[0_20px_60px_rgba(0,0,0,0.35),0_0_0_1px_rgba(0,0,0,0.05)] border border-white/40 dark:border-white/10 overflow-hidden flex flex-col z-40"
+      className="absolute top-7 right-2 w-[360px] max-h-[calc(100vh-48px)] bg-[#1c1c1f]/90 backdrop-blur-2xl rounded-[18px] shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.06)] border border-white/10 overflow-hidden flex flex-col z-40"
       style={{ WebkitBackdropFilter: "blur(24px)" }}
     >
       <div className="px-4 pt-4 pb-2 flex items-center justify-between">
         <div>
-          <div className="text-[11px] font-semibold tracking-widest text-black/50 dark:text-white/50 uppercase">Notifications</div>
-          <button onClick={()=> showToast?.(`Today is ${dateStr}`)} className="text-[13px] font-medium text-black dark:text-white hover:underline text-left">{dateStr}</button>
+          <div className="text-[11px] font-semibold tracking-widest text-white/50 uppercase">Notifications</div>
+          <button onClick={()=> showToast?.(`Today is ${dateStr}`)} className="text-[13px] font-medium text-white hover:underline text-left">{dateStr}</button>
         </div>
-        <button onClick={onClose} className="w-6 h-6 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 flex items-center justify-center">
-          <X size={12} className="text-black/60 dark:text-white/70" />
+        <button onClick={onClose} className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center">
+          <X size={12} className="text-white/70" />
         </button>
       </div>
 
@@ -64,27 +64,27 @@ export default function NotificationsPanel({ onClose, onOpenApp, showToast }) {
         </motion.button>
 
         {track && (
-          <motion.button onClick={()=> { onOpenApp?.("music"); showToast?.("Opening Music"); }} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.08 }} className="w-full bg-white dark:bg-[#2c2c2e] rounded-2xl p-3 flex items-center gap-3 shadow-sm border border-black/5 dark:border-white/5 text-left">
+          <motion.button onClick={()=> { onOpenApp?.("music"); showToast?.("Opening Music"); }} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.08 }} className="w-full bg-[#2c2c2e] rounded-2xl p-3 flex items-center gap-3 shadow-sm border border-white/5 text-left">
             <img src={track.albumImageUrl || "https://via.placeholder.com/40"} alt="" className="w-11 h-11 rounded-lg object-cover shadow-sm" />
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-semibold truncate text-black dark:text-white">{track.title || "Not Playing"}</div>
-              <div className="text-xs text-black/60 dark:text-white/60 truncate">{track.artist || "Spotify"} • Tap to open Music</div>
+              <div className="text-xs font-semibold truncate text-white">{track.title || "Not Playing"}</div>
+              <div className="text-xs text-white/60 truncate">{track.artist || "Spotify"} • Tap to open Music</div>
             </div>
-            <div className="w-7 h-7 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
+            <div className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center">
               <span className="text-[10px]">▶</span>
             </div>
           </motion.button>
         )}
 
-        <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="bg-white dark:bg-[#2c2c2e] rounded-2xl p-3 shadow-sm border border-black/5 dark:border-white/5">
+        <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="bg-[#2c2c2e] rounded-2xl p-3 shadow-sm border border-white/5">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-black dark:text-white">{monthName} {year}</span>
+            <span className="text-sm font-semibold text-white">{monthName} {year}</span>
             <div className="flex gap-1">
-              <button onClick={()=> showToast?.("Previous month")} className="w-6 h-6 rounded-full hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center"><ChevronLeft size={13} /></button>
-              <button onClick={()=> showToast?.("Next month")} className="w-6 h-6 rounded-full hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center"><ChevronRight size={13} /></button>
+              <button onClick={()=> showToast?.("Previous month")} className="w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center text-white"><ChevronLeft size={13} /></button>
+              <button onClick={()=> showToast?.("Next month")} className="w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center text-white"><ChevronRight size={13} /></button>
             </div>
           </div>
-          <div className="grid grid-cols-7 gap-1 mt-2 text-center text-[10px] font-medium text-black/40 dark:text-white/40">
+          <div className="grid grid-cols-7 gap-1 mt-2 text-center text-[10px] font-medium text-white/40">
             {dayNames.map(d => <div key={d} className="py-1">{d}</div>)}
           </div>
           <div className="grid grid-cols-7 gap-1 mt-1">
@@ -94,15 +94,15 @@ export default function NotificationsPanel({ onClose, onOpenApp, showToast }) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={()=> { if(c.isCurrent){ setSelected(c.d); showToast?.(`${monthName} ${c.d}, ${year} selected`);} else showToast?.(c.isCurrent ? `Selected ${c.d}` : `Outside current month`); }}
-                className={`h-7 flex items-center justify-center text-xs rounded-full transition ${c.d===selected && c.isCurrent ? "bg-[#007aff] text-white font-semibold shadow" : c.isToday ? "bg-[#007aff]/20 text-[#007aff] font-semibold" : c.isCurrent ? "text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10" : "text-black/20 dark:text-white/20"}`}
+                className={`h-7 flex items-center justify-center text-xs rounded-full transition ${c.d===selected && c.isCurrent ? "bg-[#007aff] text-white font-semibold shadow" : c.isToday ? "bg-[#007aff]/20 text-[#007aff] font-semibold" : c.isCurrent ? "text-white hover:bg-white/10" : "text-white/20"}`}
               >
                 {c.d}
               </motion.button>
             ))}
           </div>
-          <div className="mt-3 pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-xs">
-            <span className="font-medium text-black dark:text-white">Today</span>
-            <button onClick={()=> showToast?.("No events today")} className="text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:underline">No events • Add…</button>
+          <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-xs">
+            <span className="font-medium text-white">Today</span>
+            <button onClick={()=> showToast?.("No events today")} className="text-white/40 hover:text-white hover:underline">No events • Add…</button>
           </div>
         </motion.div>
       </div>

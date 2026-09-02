@@ -20,8 +20,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${jetbrains.variable} antialiased bg-[#0f0f0f] text-white overflow-hidden`}>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrains.variable} antialiased bg-[#0f0f12] text-zinc-100 overflow-hidden dark`}>
         {children}
       </body>
     </html>
