@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --background: #1a1a1e;
+  --foreground: #ededed;
+  --topbar: #0f0f0f;
+  --dock-bg: rgba(40,40,43,0.92);
+  --window-bg: #1e1e1e;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+  user-select: none;
+}
+
+button, input, textarea { font-family: inherit; }
+
+.no-select { user-select: none; }
+.select-text { user-select: text; }
+
+/* GNOME / Fedora style top bar */
+.topbar-blur {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* Dock */
+.dock-blur {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(38,38,40,0.92);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Window shadows */
+.window-shadow {
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06), 0 1px 1px rgba(0,0,0,0.4);
+}
+.window-shadow-active {
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+/* Animations */
+@keyframes bootPulse {
+  0% { opacity: 0.4; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.4; transform: scale(0.98); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Custom sliders */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 999px;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.slider::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%; background: white; cursor: pointer; border: none;
+}
+
+/* Terminal */
+.terminal-font {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', Menlo, monospace;
+}
+
+/* Hide Next.js dev overlay */
