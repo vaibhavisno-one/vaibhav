@@ -1,0 +1,26 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blogs icon">
+  <rect width="200" height="200" rx="22" fill="transparent"/>
+  <!-- Notebook background - cream -->
+  <rect x="12" y="12" width="176" height="176" rx="24" fill="#FFFBEB"/>
+  <!-- Notebook body -->
+  <path d="M 58 22 C 58 22 52 22 52 28 L 52 172 C 52 178 58 178 64 178 L 162 178 C 178 178 182 168 182 158 L 182 32 C 182 18 168 14 152 14 L 92 14 C 72 14 58 22 58 22 Z" fill="#FCD34D" stroke="#111827" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+  <!-- Spiral binding left -->
+  <g stroke="#111827" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.92">
+    <path d="M 52 36 C 28 40, 24 54, 52 62 C 32 70, 26 84, 52 92 C 30 100, 24 116, 52 122 C 28 130, 26 146, 52 152 C 30 160, 28 172, 50 176"/>
+    <path d="M 52 48 C 34 52, 36 66, 52 68"/>
+    <path d="M 52 76 C 36 80, 36 94, 52 98"/>
+    <path d="M 52 106 C 36 110, 36 124, 52 128"/>
+    <path d="M 52 136 C 36 140, 36 154, 52 158"/>
+  </g>
+  <!-- Inner shadow highlight -->
+  <path d="M 62 26 L 62 174" stroke="black" stroke-width="1" opacity="0.06"/>
+  <!-- Wavy lines - hand drawn style -->
+  <g stroke="#111827" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.92">
+    <path d="M 78 52 C 84 66, 92 52, 100 62 C 108 72, 114 48, 128 58 C 142 68, 146 52, 164 52"/>
+    <path d="M 80 88 C 86 102, 94 88, 102 98 C 110 108, 118 84, 132 92 C 144 100, 150 86, 164 86"/>
+    <path d="M 82 124 C 88 138, 96 124, 104 134 C 112 144, 120 120, 134 130 C 148 140, 154 122, 166 122"/>
+    <path d="M 82 160 C 88 174, 96 160, 104 170 C 112 180, 120 156, 134 166 C 148 176, 152 158, 166 148"/>
+  </g>
+  <!-- Texture overlay light -->
+  <path d="M 58 22 C 58 22 52 22 52 28 L 52 172 C 52 178 58 178 64 178 L 162 178 C 178 178 182 168 182 158 L 182 32 C 182 18 168 14 152 14 L 92 14 C 72 14 58 22 58 22 Z" fill="none" stroke="black" stroke-width="1" opacity="0.04"/>
+</svg>

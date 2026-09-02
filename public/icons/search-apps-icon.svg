@@ -1,0 +1,11 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Search Apps icon">
+  <rect width="200" height="200" rx="22" fill="transparent"/>
+  <!-- Outer circle thick -->
+  <circle cx="88" cy="88" r="62" fill="none" stroke="#0a0a0a" stroke-width="14" stroke-linecap="round"/>
+  <!-- Inner highlight arcs -->
+  <path d="M 58 56 C 52 68, 48 84, 58 100" fill="none" stroke="#0a0a0a" stroke-width="8" stroke-linecap="round" opacity="0.95"/>
+  <path d="M 68 40 C 62 48, 58 56, 56 64" fill="none" stroke="#0a0a0a" stroke-width="7" stroke-linecap="round" opacity="0.95"/>
+  <!-- Handle -->
+  <path d="M 130 130 L 168 168 L 148 188 L 110 150 Z" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="8" stroke-linejoin="round"/>
+  <rect x="128" y="132" width="48" height="52" rx="14" fill="#0a0a0a" transform="rotate(45 152 158)"/>
+</svg>

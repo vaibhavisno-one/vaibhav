@@ -1,0 +1,9 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Settings icon">
+  <rect width="200" height="200" rx="22" fill="transparent"/>
+  <!-- Outer fuzzy gear shape - hand drawn style -->
+  <path d="M 96 12 L 122 24 L 118 54 L 142 48 L 160 66 L 142 88 L 162 106 L 154 134 L 128 128 L 116 150 L 92 162 L 66 150 L 54 126 L 30 112 L 46 88 L 30 66 L 58 48 L 68 22 Z" fill="#A68A82" stroke="#0a0a0a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="0.96"/>
+  <!-- Inner oval hole -->
+  <ellipse cx="106" cy="96" rx="48" ry="58" fill="#FFFBEB" stroke="#0a0a0a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Fuzzy texture - subtle inner stroke -->
+  <path d="M 96 12 L 122 24 L 118 54 L 142 48 L 160 66 L 142 88 L 162 106 L 154 134 L 128 128 L 116 150 L 92 162 L 66 150 L 54 126 L 30 112 L 46 88 L 30 66 L 58 48 L 68 22 Z" fill="none" stroke="black" stroke-width="1" opacity="0.08"/>
+</svg>

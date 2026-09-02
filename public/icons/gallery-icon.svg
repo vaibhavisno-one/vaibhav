@@ -1,0 +1,19 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gallery icon">
+  <rect width="200" height="200" rx="22" fill="#7A0A0A"/>
+  <!-- Back photo - slight offset top right, skewed -->
+  <g transform="rotate(6 100 100)">
+    <rect x="52" y="34" width="96" height="122" rx="10" fill="none" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.98"/>
+    <rect x="52" y="134" width="96" height="18" rx="4" fill="white"/>
+  </g>
+  <!-- Front photo -->
+  <g>
+    <rect x="38" y="46" width="102" height="126" rx="12" fill="none" stroke="white" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="38" y="148" width="102" height="20" rx="5" fill="white"/>
+    <!-- inner image -->
+    <!-- Sun -->
+    <circle cx="118" cy="84" r="18" fill="white"/>
+    <!-- Mountains -->
+    <path d="M 52 138 L 68 92 L 98 48 L 128 92 L 142 104 L 134 138 Z" fill="white" stroke="white" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M 118 98 L 128 82 L 142 96 L 142 104 L 118 104 Z" fill="#7A0A0A" />
+  </g>
+</svg>

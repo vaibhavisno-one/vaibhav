@@ -1,0 +1,64 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Browser icon" shape-rendering="crispEdges">
+  <rect width="200" height="200" rx="22" fill="transparent"/>
+  <!-- Pixel globe base -->
+  <g transform="translate(18, 18)">
+    <!-- Outer pixel circle outline -->
+    <!-- Use manual pixels for globe -->
+    <!-- Ocean background -->
+    <rect x="36" y="12" width="88" height="140" fill="#3B82F6" opacity="0"/>
+    <!-- Approx pixel globe using rects 8px -->
+    <!-- We'll draw 16x16 grid clipped to circle -->
+    <g clip-path="url(#globeClip2)">
+      <rect x="0" y="0" width="164" height="164" fill="#2B78E8"/>
+      <!-- Light blue highlight left -->
+      <rect x="8" y="24" width="8" height="48" fill="#93C5FD" opacity="0.85"/>
+      <rect x="16" y="16" width="24" height="16" fill="#93C5FD" opacity="0.7"/>
+      <!-- Dark blue depth -->
+      <rect x="48" y="96" width="56" height="56" fill="#1E40AF" opacity="0.55"/>
+      <rect x="32" y="112" width="24" height="24" fill="#1E40AF" opacity="0.45"/>
+      <!-- Green continents - North America top -->
+      <rect x="24" y="16" width="48" height="8" fill="#22C55E"/>
+      <rect x="16" y="24" width="64" height="8" fill="#22C55E"/>
+      <rect x="16" y="32" width="56" height="8" fill="#16A34A"/>
+      <rect x="24" y="40" width="32" height="8" fill="#16A34A"/>
+      <rect x="32" y="48" width="24" height="8" fill="#22C55E" opacity="0.9"/>
+      <!-- Central small island -->
+      <rect x="72" y="56" width="8" height="8" fill="#22C55E"/>
+      <rect x="80" y="48" width="16" height="16" fill="#22C55E"/>
+      <rect x="80" y="64" width="8" height="8" fill="#16A34A"/>
+      <!-- South America left large -->
+      <rect x="8" y="80" width="48" height="16" fill="#22C55E"/>
+      <rect x="8" y="96" width="56" height="16" fill="#22C55E"/>
+      <rect x="16" y="112" width="48" height="16" fill="#22C55E"/>
+      <rect x="24" y="128" width="40" height="8" fill="#16A34A"/>
+      <rect x="32" y="136" width="24" height="8" fill="#16A34A"/>
+      <!-- Africa/Eurasia right -->
+      <rect x="96" y="72" width="40" height="8" fill="#22C55E"/>
+      <rect x="88" y="80" width="56" height="8" fill="#22C55E"/>
+      <rect x="88" y="88" width="56" height="16" fill="#22C55E"/>
+      <rect x="96" y="104" width="32" height="8" fill="#22C55E"/>
+      <rect x="104" y="112" width="16" height="16" fill="#22C55E"/>
+      <!-- Small island bottom -->
+      <rect x="80" y="136" width="8" height="8" fill="#22C55E"/>
+      <rect x="88" y="144" width="4" height="4" fill="#22C55E"/>
+      <!-- Pixel dithering for water -->
+      <g fill="white" opacity="0.12">
+        <rect x="48" y="48" width="4" height="4"/><rect x="56" y="56" width="4" height="4"/><rect x="64" y="48" width="4" height="4"/><rect x="40" y="64" width="4" height="4"/>
+        <rect x="96" y="48" width="4" height="4"/><rect x="104" y="56" width="4" height="4"/><rect x="112" y="64" width="4" height="4"/>
+      </g>
+    </g>
+    <defs>
+      <clipPath id="globeClip2">
+        <!-- Pixel circle approx -->
+        <rect x="8" y="32" width="148" height="100" rx="0"/>
+        <circle cx="82" cy="82" r="74"/>
+      </clipPath>
+    </defs>
+    <!-- Pixel outline for globe - stepped -->
+    <g fill="none" stroke="#0a0a0a" stroke-width="3" opacity="0.95">
+      <path d="M 58 10 L 106 10 L 118 14 L 130 22 L 142 32 L 150 44 L 154 58 L 154 106 L 150 120 L 142 132 L 130 142 L 118 150 L 106 154 L 58 154 L 46 150 L 34 142 L 22 130 L 16 116 L 14 102 L 16 88 L 22 74 L 30 62 L 38 50 L 46 42 Z" />
+    </g>
+    <!-- Inner shadow bottom -->
+    <path d="M 40 128 L 48 136 L 72 148 L 102 154 L 128 148 L 140 132 L 148 110 L 148 96" fill="none" stroke="black" stroke-width="2" opacity="0.15"/>
+  </g>
+</svg>

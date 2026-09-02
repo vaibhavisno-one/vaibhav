@@ -1,0 +1,58 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Music icon" shape-rendering="crispEdges">
+  <rect width="200" height="200" rx="22" fill="transparent"/>
+  <!-- Pixel CD background shadow -->
+  <circle cx="104" cy="108" r="78" fill="none" stroke="black" stroke-width="3" opacity="0.12"/>
+  <!-- CD disc base - light gray -->
+  <circle cx="102" cy="108" r="74" fill="#D4D4D8" stroke="#1a1a1a" stroke-width="3"/>
+  <!-- Pixel segments - pastel -->
+  <!-- Use clipPath for disc -->
+  <g clip-path="url(#discClip)">
+    <!-- Pink segment top right -->
+    <rect x="118" y="52" width="52" height="18" fill="#F9A8D4" opacity="0.95"/>
+    <rect x="132" y="70" width="38" height="14" fill="#A7F3D0" opacity="0.95"/>
+    <rect x="86" y="132" width="32" height="16" fill="#C4B5FD" opacity="0.95"/>
+    <rect x="64" y="122" width="28" height="14" fill="#A7F3D0" opacity="0.95"/>
+    <rect x="62" y="108" width="26" height="10" fill="#F9A8D4" opacity="0.85"/>
+    <rect x="92" y="148" width="22" height="14" fill="#FED7AA" opacity="0.95"/>
+    <rect x="122" y="88" width="12" height="10" fill="#F9A8D4" opacity="0.7"/>
+  </g>
+  <defs>
+    <clipPath id="discClip">
+      <circle cx="102" cy="108" r="72"/>
+    </clipPath>
+  </defs>
+  <!-- Radial gradient highlight for 3D -->
+  <circle cx="102" cy="108" r="74" fill="none" stroke="white" stroke-width="1" opacity="0.22"/>
+  <!-- Inner radial rings (CD grooves) - subtle -->
+  <g fill="none" stroke="black" opacity="0.08" stroke-width="0.7">
+    <circle cx="102" cy="108" r="60"/><circle cx="102" cy="108" r="52"/><circle cx="102" cy="108" r="44"/><circle cx="102" cy="108" r="36"/>
+  </g>
+  <!-- Black center hub -->
+  <circle cx="102" cy="108" r="26" fill="#111111" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="102" cy="108" r="10" fill="white" stroke="#1a1a1a" stroke-width="1.8"/>
+  <rect x="98" y="104" width="8" height="8" rx="1" fill="white"/>
+  <!-- Pixel highlight on disc - top left shine -->
+  <g fill="white" opacity="0.55">
+    <rect x="42" y="52" width="8" height="8"/><rect x="50" y="44" width="8" height="8"/><rect x="58" y="40" width="6" height="6"/>
+  </g>
+  <!-- Music note - pixelated -->
+  <g fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.2" stroke-linejoin="miter">
+    <!-- Left note head -->
+    <rect x="22" y="78" width="20" height="20" rx="2"/>
+    <rect x="24" y="80" width="4" height="4" fill="white" stroke="none" opacity="0.9"/>
+    <!-- Right note head lower -->
+    <rect x="52" y="96" width="20" height="20" rx="2"/>
+    <rect x="54" y="98" width="4" height="4" fill="white" stroke="none" opacity="0.9"/>
+    <!-- Stem left -->
+    <rect x="40" y="26" width="8" height="68"/>
+    <!-- Stem right / slant -->
+    <rect x="64" y="32" width="8" height="72"/>
+    <!-- Beam top -->
+    <rect x="42" y="26" width="30" height="10"/>
+    <rect x="48" y="34" width="24" height="8"/>
+    <!-- Flag diagonal -->
+    <rect x="40" y="38" width="6" height="6" transform="rotate(22 40 38)"/>
+  </g>
+  <!-- Outer outline for CD -->
+  <circle cx="102" cy="108" r="74" fill="none" stroke="#0a0a0a" stroke-width="2.8"/>
+</svg>
