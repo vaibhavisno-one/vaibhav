@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored game build (bridge-horror-house) — not our source:
+    "public/games/**",
   ]),
 ]);
 

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bridge Horror House</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Special+Elite&family=Inter:wght@400;600&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#040508; }
+  body { font-family:'Inter', system-ui, sans-serif; color:#e8e6e1; }
+
+  #game-container { position:fixed; inset:0; width:100vw; height:100vh; overflow:hidden; background:#040508; }
+  #c { display:block; width:100%; height:100%; cursor:crosshair; }
+
+  /* Vignette — heavy dark edges */
+  #vignette {
+    position:absolute; inset:0; pointer-events:none; z-index:5;
+    background: radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.52) 78%, rgba(0,0,0,0.94) 100%);
+    opacity:0.72; transition: opacity 0.3s;
+  }
+  /* Film grain overlay — animated via CSS */
+  #grain {
+    position:absolute; inset:0; pointer-events:none; z-index:6; opacity:0.11; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+    animation: grainShift 0.18s steps(3) infinite;
+  }
+  @keyframes grainShift {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(-1.5%, 0.7%); }
+    50% { transform: translate(0.9%, -1.1%); }
+    75% { transform: translate(-0.6%, -0.4%); }
+    100% { transform: translate(0,0); }
+  }
+
+  /* Flash overlay for scares / lightning / burn */
+  #flash-overlay {
+    position:absolute; inset:0; pointer-events:none; z-index:7; opacity:0; background:#fff;
+    transition: opacity 0.12s ease-out;
+  }
+
+  /* HUD shake wrapper — wraps HUD elements that should shake */
+  #hud-shake-wrapper { position:absolute; inset:0; pointer-events:none; z-index:8; }
+
+  /* Crosshair */
+  #crosshair {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:14px; height:14px; border:1.75px solid rgba(255,255,255,0.82); border-radius:50%;
+    pointer-events:none; z-index:9; transition: border-color 0.12s, box-shadow 0.12s;
+    box-shadow: none;
+  }
+  #crosshair::before, #crosshair::after {
+    content:''; position:absolute; background:rgba(255,255,255,0.82);
+  }
+  #crosshair::before { left:50%; top:50%; width:1.5px; height:4px; transform:translate(-50%,-50%); opacity:0.0; }
+  #crosshair::after  { left:50%; top:50%; width:4px; height:1.5px; transform:translate(-50%,-50%); opacity:0.0; }
+  #crosshair.burning { width:18px; height:18px; border-width:2.2px; }
+
+  /* Burn meter above crosshair */
+  #burn-container {
+    position:absolute; left:50%; top:calc(50% + 22px); transform:translateX(-50%);
+    width:130px; height:6px; background:rgba(0,0,0,0.62); border:1px solid rgba(255,255,255,0.18);
+    border-radius:3px; overflow:hidden; z-index:9; opacity:0; transition: opacity 0.18s;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  #burn-fill { height:100%; width:0%; background:#ffd86a; transition: width 0.06s linear, background 0.12s; }
+
+  /* Top HUD: objective + keys */
+  #hud-top {
+    position:absolute; top:18px; left:50%; transform:translateX(-50%); z-index:9; pointer-events:none;
+    display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center;
+  }
+  #objective {
+    background:rgba(0,0,0,0.62); border:1px solid rgba(255,216,106,0.22); border-radius:4px;
+    padding:7px 14px; font-family:'Special Elite', monospace; font-size:13.5px; letter-spacing:0.04em;
+    color:#f0e6c8; text-shadow:0 1px 8px rgba(0,0,0,0.9); opacity:0.78; transition: opacity 0.4s, transform 0.4s;
+    max-width:520px;
+  }
+  #keys-badge {
+    background:rgba(0,0,0,0.62); border:1px solid rgba(255,255,255,0.12); border-radius:999px;
+    padding:5px 12px; font-size:12px; letter-spacing:0.08em; color:#d9c48a; font-weight:600;
+    display:flex; align-items:center; gap:7px;
+  }
+  #keys-badge span.key-icon { width:14px; height:14px; background:#c9a84c; border-radius:2px; display:inline-block; border:1px solid #7a5c2e; box-shadow:0 0 6px rgba(201,168,76,0.6); }
+
+  /* Battery HUD bottom-left */
+  #battery-hud {
+    position:absolute; left:18px; bottom:18px; z-index:9; pointer-events:none;
+    display:flex; flex-direction:column; gap:6px; min-width:160px;
+  }
+  #battery-label { font-size:10px; letter-spacing:0.16em; color:rgba(255,255,255,0.62); font-weight:600; display:flex; align-items:center; gap:6px; }
+  #battery-label::before { content:'◐'; font-size:11px; color:#ffcc55; }
+  #battery-bar {
+    width:160px; height:10px; background:rgba(0,0,0,0.72); border:1px solid rgba(255,255,255,0.16); border-radius:999px; overflow:hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+  }
+  #battery-fill { height:100%; width:100%; background:#7af05a; border-radius:999px; transition: width 0.18s, background 0.22s; box-shadow:none; }
+  #battery-text { font-size:10px; color:rgba(255,255,255,0.72); letter-spacing:0.06em; margin-left:2px; }
+
+  /* Interact prompt center bottom */
+  #interact-prompt {
+    position:absolute; left:50%; bottom:92px; transform:translateX(-50%); z-index:9; pointer-events:none;
+    background:rgba(0,0,0,0.72); border:1px solid rgba(255,255,255,0.14); border-radius:4px;
+    padding:7px 12px; font-size:12.5px; letter-spacing:0.05em; color:#fff; font-weight:600;
+    opacity:0; transition: opacity 0.15s; text-shadow:0 1px 6px rgba(0,0,0,0.9);
+  }
+
+  /* Controls hint bottom right */
+  #controls-hint {
+    position:absolute; right:16px; bottom:16px; z-index:9; pointer-events:none;
+    font-size:10.5px; line-height:1.55; color:rgba(255,255,255,0.42); text-align:right; letter-spacing:0.04em;
+    background:rgba(0,0,0,0.42); padding:8px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.06);
+  }
+
+  /* TITLE SCREEN */
+  #title-screen {
+    position:absolute; inset:0; z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background: radial-gradient(ellipse at 50% 38%, rgba(30,18,8,0.92) 0%, rgba(6,7,10,0.96) 58%, #020308 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.72)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    color:#f0e6c8; text-align:center; padding:32px 20px;
+  }
+  #title-screen h1 {
+    font-family:'Cinzel', serif; font-weight:900; font-size: clamp(34px, 7vw, 62px); letter-spacing:0.14em; line-height:0.95;
+    color:#f2e6c8; text-shadow:0 2px 0 #2a1d0f, 0 8px 22px rgba(0,0,0,0.85), 0 0 18px rgba(255,170,40,0.22);
+    margin-bottom:10px;
+  }
+  #title-screen h1 span { display:block; font-size:0.42em; letter-spacing:0.42em; font-weight:400; color:#c9a84c; margin-top:8px; opacity:0.92; }
+  #title-subtitle {
+    font-family:'Special Elite', monospace; font-size:14px; line-height:1.65; color:rgba(240,230,200,0.78);
+    max-width:560px; margin:14px auto 18px; text-shadow:0 1px 8px rgba(0,0,0,0.8);
+  }
+  #title-lore {
+    font-family:'Special Elite', monospace; font-size:12.5px; line-height:1.7; color:rgba(240,230,200,0.62);
+    max-width:520px; border-left:2px solid rgba(201,168,76,0.42); padding-left:12px; margin:10px auto 22px; text-align:left;
+    background:rgba(0,0,0,0.22); padding:10px 12px; border-radius:3px;
+  }
+  #enter-btn {
+    appearance:none; border:1.5px solid #c9a84c; background:linear-gradient(180deg, #1a1208, #0d0a06); color:#f2e6c8;
+    font-family:'Cinzel', serif; font-weight:700; letter-spacing:0.22em; font-size:14px; padding:14px 28px; border-radius:2px;
+    cursor:pointer; box-shadow:0 4px 18px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06); transition: all 0.16s;
+    text-transform:uppercase;
+  }
+  #enter-btn:hover { background:linear-gradient(180deg, #2a1d0f, #1a1208); border-color:#e8c55a; color:#fff; box-shadow:0 6px 24px rgba(0,0,0,0.65), 0 0 14px rgba(201,168,76,0.32); transform:translateY(-1px); }
+  #enter-btn:active { transform:translateY(0); }
+  #enter-btn:disabled { opacity:0.62; cursor:progress; }
+  #title-foot {
+    margin-top:18px; font-size:10.5px; letter-spacing:0.12em; color:rgba(255,255,255,0.42); text-transform:uppercase;
+  }
+  #title-controls { margin-top:10px; font-size:11px; color:rgba(255,255,255,0.38); font-family:'Inter', sans-serif; letter-spacing:0.04em; }
+
+  /* Note overlay */
+  #note-overlay {
+    position:absolute; inset:0; z-index:18; display:none; align-items:center; justify-content:center; padding:24px;
+    background:rgba(2,3,6,0.72); backdrop-filter: blur(3px);
+  }
+  #note-overlay.visible { display:flex; }
+  #note-card {
+    background:#f2e6c8; color:#1a1208; width:min(520px, 92vw); border-radius:3px; padding:22px 22px 18px;
+    box-shadow:0 18px 42px rgba(0,0,0,0.72), 0 0 0 1px rgba(0,0,0,0.18); position:relative;
+    font-family:'Special Elite', monospace;
+    transform: rotate(-0.35deg);
+  }
+  #note-card::before {
+    content:''; position:absolute; inset:7px; border:1.25px solid rgba(26,18,8,0.18); pointer-events:none; border-radius:2px;
+  }
+  #note-title { font-family:'Cinzel', serif; font-weight:800; font-size:17px; letter-spacing:0.14em; color:#5a3a18; margin-bottom:10px; text-align:center; }
+  #note-body { font-size:13.5px; line-height:1.75; white-space:pre-line; color:#2b1d0f; }
+  #note-close-hint { margin-top:12px; text-align:center; font-size:11px; letter-spacing:0.12em; color:rgba(43,29,15,0.62); }
+
+  /* Death / Win screens */
+  #death-screen, #win-screen {
+    position:absolute; inset:0; z-index:19; display:none; flex-direction:column; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at center, rgba(40,6,6,0.92), rgba(2,2,4,0.98)); text-align:center; padding:28px;
+  }
+  #death-screen.visible, #win-screen.visible { display:flex; }
+  #death-title { font-family:'Cinzel', serif; font-weight:900; font-size:42px; letter-spacing:0.18em; color:#ff1a1a; text-shadow:0 0 18px rgba(255,26,26,0.55); margin-bottom:10px; }
+  #win-title { font-family:'Cinzel', serif; font-weight:900; font-size:38px; letter-spacing:0.16em; color:#7af05a; text-shadow:0 0 14px rgba(122,240,90,0.42); margin-bottom:10px; }
+  #death-sub, #win-sub { font-family:'Special Elite', monospace; font-size:14px; color:rgba(255,255,255,0.82); max-width:520px; line-height:1.6; margin-bottom:18px; }
+  #death-screen button, #win-screen button {
+    appearance:none; border:1px solid rgba(255,255,255,0.42); background:rgba(0,0,0,0.42); color:#fff; font-family:'Cinzel', serif;
+    font-weight:700; letter-spacing:0.16em; font-size:13px; padding:11px 22px; cursor:pointer; border-radius:2px; transition:all 0.14s;
+  }
+  #death-screen button:hover, #win-screen button:hover { background:rgba(255,255,255,0.08); border-color:#fff; }
+  #win-stats { display:flex; gap:18px; margin-bottom:18px; font-family:'Inter', sans-serif; font-size:13px; color:rgba(255,255,255,0.88); }
+  #win-stats div { background:rgba(0,0,0,0.42); padding:10px 14px; border-radius:4px; border:1px solid rgba(255,255,255,0.12); min-width:110px; }
+  #win-stats strong { display:block; font-size:20px; color:#ffd86a; letter-spacing:0.06em; }
+
+  /* Jumpscare fullscreen face */
+  #jumpscare {
+    position:absolute; inset:0; z-index:22; display:none; align-items:center; justify-content:center; background:#000; overflow:hidden;
+  }
+  #jumpscare.active { display:flex; }
+  #jumpscare-face {
+    width:min(86vw, 560px); height:min(92vh, 720px); background:#050505; border-radius:4px; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; animation: jumpscareShake 0.09s steps(2) infinite;
+    box-shadow:0 0 40px rgba(255,0,0,0.22);
+  }
+  @keyframes jumpscareShake {
+    0% { transform: translate(-2px, 1px) scale(1.02) rotate(-0.6deg); filter: hue-rotate(0deg) contrast(1.15); }
+    50% { transform: translate(2px, -1.5px) scale(1.035) rotate(0.6deg); filter: hue-rotate(8deg) contrast(1.35) brightness(1.08); }
+    100% { transform: translate(-1px, 0.5px) scale(1.02) rotate(-0.3deg); }
+  }
+  #jumpscare-face::before {
+    content:''; position:absolute; inset:0; background:
+      radial-gradient(ellipse at 28% 38%, rgba(255,40,10,0.12), transparent 55%),
+      radial-gradient(ellipse at 72% 38%, rgba(255,40,10,0.12), transparent 55%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), transparent 22%);
+    pointer-events:none;
+  }
+  .js-eyes { display:flex; gap:62px; margin-bottom:18px; }
+  .js-eye { width:86px; height:86px; background:radial-gradient(circle at 32% 28%, #fff 8%, #ffe8a0 14%, #ff3a12 26%, #7a0a00 58%, #0a0000 78%); border-radius:50%; box-shadow:0 0 22px rgba(255,40,10,0.72), 0 0 42px rgba(255,20,0,0.35); position:relative; }
+  .js-eye::after { content:''; position:absolute; left:50%; top:50%; width:22px; height:22px; background:#050000; border-radius:50%; transform:translate(-50%,-44%); box-shadow:0 0 0 4px rgba(0,0,0,0.65); }
+  .js-mouth { width:170px; height:110px; background:radial-gradient(ellipse at center, #1a0202 28%, #050000 72%); border-radius:50% / 58%; border:3px solid #2a0a0a; position:relative; overflow:hidden; box-shadow:inset 0 8px 18px rgba(0,0,0,0.9), 0 0 18px rgba(0,0,0,0.9); }
+  .js-mouth::before { content:'▲ ▲ ▲ ▲ ▲'; position:absolute; top:6px; left:50%; transform:translateX(-50%); color:#f2e6c8; font-size:13px; letter-spacing:6px; text-shadow:0 1px 0 #000; opacity:0.92; }
+  .js-mouth::after { content:'▼ ▼ ▼ ▼'; position:absolute; bottom:10px; left:50%; transform:translateX(-50%); color:#f2e6c8; font-size:13px; letter-spacing:7px; text-shadow:0 1px 0 #000; opacity:0.88; }
+  #jumpscare-text { position:absolute; bottom:18px; left:50%; transform:translateX(-50%); font-family:'Cinzel', serif; font-weight:900; letter-spacing:0.32em; color:rgba(255,30,30,0.92); font-size:13px; text-shadow:0 0 12px rgba(255,0,0,0.72); }
+
+  /* Responsive HUD */
+  @media (max-width: 640px) {
+    #battery-hud { left:12px; bottom:12px; }
+    #controls-hint { display:none; }
+    #objective { font-size:12px; padding:6px 10px; }
+  }
+</style>
+  <script type="module" crossorigin src="/games/bridge-horror-house/assets/index-w2YvhVI_.js"></script>
+</head>
+<body>
+<div id="game-container">
+  <canvas id="c"></canvas>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+  <div id="flash-overlay"></div>
+
+  <div id="hud-shake-wrapper">
+    <div id="crosshair"></div>
+    <div id="burn-container"><div id="burn-fill"></div></div>
+
+    <div id="hud-top">
+      <div id="objective"><span id="objective-text">Find the 3 brass keys and escape</span></div>
+      <div id="keys-badge"><span class="key-icon"></span> KEYS <span id="keys">0 / 3</span></div>
+    </div>
+
+    <div id="battery-hud">
+      <div id="battery-label">TORCH</div>
+      <div id="battery-bar"><div id="battery-fill"></div></div>
+      <div id="battery-text">100%</div>
+    </div>
+
+    <div id="interact-prompt"></div>
+    <div id="controls-hint">
+      WASD Move · Shift Sprint · Mouse Look · F Torch · E Interact<br>
+      Hold beam on him to burn · Find spare batteries · 3 keys to escape
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div id="title-screen">
+    <h1>BRIDGE<span>HORROR HOUSE</span></h1>
+    <p id="title-subtitle">You wake on the cold boards of an abandoned house at night. Every exit is sealed. Three brass keys are hidden in the dark. Find them, unlock the front door, and escape — but you are not alone in here.</p>
+    <div id="title-lore">
+      “They sealed every exit. Kitchen, Study, Bedroom — each holds a key.<br>
+      If you see him, <b>LIGHT burns him</b>. Hold the beam on him until he shrieks.<br>
+      Battery fades. Find spares. When the final key is taken, <b>RUN</b>.”
+      <br><span style="opacity:0.72">— M</span>
+    </div>
+    <button id="enter-btn">ENTER THE HOUSE</button>
+    <div id="title-foot">Headphones in a dark room — 60 seconds to dread</div>
+    <div id="title-controls">W A S D + Mouse · Shift Sprint · F Toggle Torch · E Interact/Open</div>
+  </div>
+
+  <!-- Note -->
+  <div id="note-overlay">
+    <div id="note-card">
+      <div id="note-title">NOTE</div>
+      <div id="note-body"></div>
+      <div id="note-close-hint">[ Esc / E or Click to close ]</div>
+    </div>
+  </div>
+
+  <!-- Jumpscare -->
+  <div id="jumpscare">
+    <div id="jumpscare-face">
+      <div class="js-eyes"><div class="js-eye"></div><div class="js-eye"></div></div>
+      <div class="js-mouth"></div>
+      <div id="jumpscare-text">HE HAS YOU</div>
+    </div>
+  </div>
+
+  <!-- Death -->
+  <div id="death-screen">
+    <div id="death-title">CAUGHT</div>
+    <div id="death-sub">The light sputtered. He was already there.<br>The house keeps you.</div>
+    <button id="restart-death">TRY AGAIN</button>
+  </div>
+
+  <!-- Win -->
+  <div id="win-screen">
+    <div id="win-title">ESCAPED</div>
+    <div id="win-sub">You burst through the front door into the storm — the house exhales behind you.</div>
+    <div id="win-stats">
+      <div><span>TIME</span><strong id="win-time">00:00.0</strong></div>
+      <div><span>BANISHED</span><strong id="win-banish">0</strong> <span style="font-size:10px; opacity:0.72">times</span></div>
+    </div>
+    <button id="restart-win">PLAY AGAIN</button>
+  </div>
+</div>
+
+</body>
+</html>

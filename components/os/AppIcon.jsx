@@ -37,6 +37,12 @@ export default function AppIcon({ appId, size = 28, active = false }) {
           <img src="/icons/gallery-icon.svg" alt="Gallery" style={{ width: size, height: size }} className="w-full h-full object-cover" draggable={false} />
         </div>
       );
+    case "games":
+      return (
+        <div style={s} className={`rounded-[10px] overflow-hidden shadow-sm border border-black/5 ${ring} bg-[#15131F] flex items-center justify-center`}>
+          <img src="/icons/games-icon.svg" alt="Games" style={{ width: size, height: size }} className="w-full h-full object-cover" draggable={false} />
+        </div>
+      );
     case "notes":
     case "blogs":
       return (

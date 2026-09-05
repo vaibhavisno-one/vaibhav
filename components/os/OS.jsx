@@ -23,6 +23,7 @@ import FilesApp from "./apps/FilesApp";
 import BrowserApp from "./apps/BrowserApp";
 import SpotifyApp from "./apps/SpotifyApp";
 import PhotosApp from "./apps/PhotosApp";
+import GamesApp from "./apps/GamesApp";
 import NotesApp from "./apps/NotesApp";
 import ContactApp from "./apps/ContactApp";
 import SettingsApp from "./apps/SettingsApp";
@@ -33,6 +34,7 @@ const APP_COMPONENTS = {
   browser: BrowserApp,
   music: SpotifyApp,
   gallery: PhotosApp,
+  games: GamesApp,
   notes: NotesApp,
   contact: ContactApp,
   settings: SettingsApp,
@@ -137,6 +139,8 @@ export default function OS() {
 
   useEffect(() => {
     let timer;
+    // Games use Esc themselves (close notes, exit pointer lock) — never count it toward shutdown
+    const gameFocused = windows.some((w) => w.id === activeId && !w.isMinimized && w.appId === "games");
     const onKey = (e) => {
       if (e.key === "Escape") {
         if (quickSearchOpen) { setQuickSearchOpen(false); return; }
@@ -144,6 +148,7 @@ export default function OS() {
         if (notificationOpen) { setNotificationOpen(false); return; }
         if (controlOpen) { setControlOpen(false); return; }
         if (wallpaperMenu) { setWallpaperMenu(null); return; }
+        if (gameFocused) return;
         setEscCount((c) => {
           const nc = c + 1;
           if (nc >= 3) {
@@ -172,7 +177,7 @@ export default function OS() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [quickSearchOpen, launcherOpen, notificationOpen, controlOpen, wallpaperMenu, bootPhase]);
+  }, [quickSearchOpen, launcherOpen, notificationOpen, controlOpen, wallpaperMenu, bootPhase, windows, activeId]);
 
   const wallpaper = WALLPAPERS[wallpaperIdx];
   const wallpaperStyle = getWallpaperStyle(wallpaper);

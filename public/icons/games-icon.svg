@@ -1,0 +1,29 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Games icon">
+  <rect width="200" height="200" rx="22" fill="transparent"/>
+  <!-- Shadow -->
+  <ellipse cx="100" cy="178" rx="70" ry="10" fill="black" opacity="0.08"/>
+  <!-- Night sky tile -->
+  <rect x="18" y="18" width="164" height="164" rx="26" fill="#15131F" stroke="#0a0a0a" stroke-width="3"/>
+  <!-- Moon -->
+  <circle cx="146" cy="62" r="20" fill="#F2E6C8" stroke="#0a0a0a" stroke-width="3"/>
+  <circle cx="139" cy="56" r="5" fill="#D9CBA6"/>
+  <circle cx="152" cy="68" r="3.5" fill="#D9CBA6"/>
+  <!-- Stars -->
+  <circle cx="52" cy="52" r="3" fill="#fff"/>
+  <circle cx="80" cy="38" r="2.2" fill="#fff" opacity="0.8"/>
+  <circle cx="106" cy="60" r="2.4" fill="#fff" opacity="0.7"/>
+  <circle cx="36" cy="92" r="2" fill="#fff" opacity="0.7"/>
+  <!-- Controller body -->
+  <g transform="rotate(-6 100 128)">
+    <path d="M52 108 Q52 96 66 96 L134 96 Q148 96 148 108 L156 142 Q158 156 144 156 Q133 156 129 145 L124 133 L76 133 L71 145 Q67 156 56 156 Q42 156 44 142 Z" fill="#EDE9E1" stroke="#0a0a0a" stroke-width="3" stroke-linejoin="round"/>
+    <!-- D-pad -->
+    <rect x="66" y="110" width="10" height="26" rx="2" fill="#1C1C1A" stroke="#0a0a0a" stroke-width="2"/>
+    <rect x="58" y="118" width="26" height="10" rx="2" fill="#1C1C1A" stroke="#0a0a0a" stroke-width="2"/>
+    <!-- Buttons -->
+    <circle cx="128" cy="114" r="6.5" fill="#C85450" stroke="#0a0a0a" stroke-width="2.5"/>
+    <circle cx="141" cy="126" r="6.5" fill="#D6C5A8" stroke="#0a0a0a" stroke-width="2.5"/>
+    <!-- Joysticks -->
+    <circle cx="100" cy="112" r="4" fill="#1C1C1A"/>
+    <circle cx="100" cy="126" r="4" fill="#1C1C1A"/>
+  </g>
+</svg>
