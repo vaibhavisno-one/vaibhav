@@ -29,19 +29,19 @@ export default function AppLauncher({ windows, onFocus, onClose, onOpenApp, quer
       <button onClick={onExit} className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur flex items-center justify-center text-white/70">
         <X size={16} />
       </button>
-      <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.08 }} className="h-10 flex items-center justify-center px-4" onClick={(e)=> e.stopPropagation()}>
-        <div className="flex items-center gap-2 w-full max-w-[360px] bg-white/10 backdrop-blur rounded-full px-4 py-2 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-          <Search size={14} className="text-white/40" />
+      <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.08 }} className="flex items-center justify-center px-4 pt-9 pb-2" onClick={(e)=> e.stopPropagation()}>
+        <div className="flex items-center gap-2.5 w-full max-w-[380px] bg-white/[0.08] backdrop-blur rounded-full px-4 py-2.5 border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] focus-within:bg-white/[0.11] focus-within:border-white/20 transition">
+          <Search size={14} className="text-white/40 shrink-0" />
           <input
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onClick={(e)=> e.stopPropagation()}
             placeholder="Search Vaibhav OS"
-            className="flex-1 bg-transparent outline-none text-[13px] placeholder:text-white/40 text-white text-center"
+            className="flex-1 min-w-0 bg-transparent outline-none text-[13px] placeholder:text-white/40 text-white text-center"
           />
           {query && (
-            <button onClick={(e)=>{e.stopPropagation(); setQuery("");}} className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center">
+            <button onClick={(e)=>{e.stopPropagation(); setQuery("");}} className="w-5 h-5 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center shrink-0 transition">
               <X size={10} className="text-white" />
             </button>
           )}
@@ -89,8 +89,8 @@ export default function AppLauncher({ windows, onFocus, onClose, onOpenApp, quer
           )}
         </AnimatePresence>
 
-        <div className="max-w-5xl mx-auto px-8 pb-10" onClick={(e)=> e.stopPropagation()}>
-          <motion.div layout className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 gap-6 md:gap-8">
+        <div className="max-w-xl mx-auto px-8 pb-10 pt-4" onClick={(e)=> e.stopPropagation()}>
+          <motion.div layout className="flex flex-wrap justify-center gap-x-7 gap-y-8 md:gap-x-10">
             <AnimatePresence>
               {pagedApps.map((a, i) => (
                 <motion.button
@@ -103,22 +103,25 @@ export default function AppLauncher({ windows, onFocus, onClose, onOpenApp, quer
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.93 }}
                   onClick={() => { onOpenApp(a.id); onExit(); }}
-                  className="flex flex-col items-center gap-2 group"
+                  title={a.desc}
+                  className="flex flex-col items-center gap-2 group w-[88px]"
                 >
-                  <motion.div className="w-[68px] h-[68px] md:w-[72px] md:h-[72px] rounded-[16px] shadow-[0_8px_24px_rgba(0,0,0,0.45)] overflow-hidden bg-white border border-white/10">
-                    <AppIcon appId={a.id} size={68} />
+                  <motion.div className="w-[72px] h-[72px] rounded-[20px] shadow-[0_8px_24px_rgba(0,0,0,0.45)] overflow-hidden bg-white border border-white/10 ring-1 ring-white/10 group-hover:ring-2 group-hover:ring-white/30 transition">
+                    <AppIcon appId={a.id} size={72} />
                   </motion.div>
-                  <span className="text-[11px] leading-tight text-white text-center font-medium drop-shadow px-1 py-0.5 rounded-md group-hover:bg-white/10">{a.name}</span>
+                  <span className="text-[11px] leading-tight text-white text-center font-medium drop-shadow px-1 py-0.5 rounded-md group-hover:bg-white/10 w-full truncate">{a.name}</span>
                 </motion.button>
               ))}
             </AnimatePresence>
           </motion.div>
 
-          <div className="flex items-center justify-center gap-2 mt-10">
-            {Array.from({ length: Math.max(1, pages) }).map((_, i) => (
-              <button key={i} onClick={() => setPage(i)} className={`transition-all ${i === page ? "w-6 h-1.5 rounded-full bg-white shadow" : "w-1.5 h-1.5 rounded-full bg-white/40 hover:bg-white/60"}`} />
-            ))}
-          </div>
+          {pages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-10">
+              {Array.from({ length: pages }).map((_, i) => (
+                <button key={i} onClick={() => setPage(i)} aria-label={`Page ${i + 1}`} className={`transition-all ${i === page ? "w-6 h-1.5 rounded-full bg-white shadow" : "w-1.5 h-1.5 rounded-full bg-white/40 hover:bg-white/60"}`} />
+              ))}
+            </div>
+          )}
 
           <div className="flex justify-center mt-6">
             <span className="text-[11px] text-white/30">Press ESC to exit • Click an app to open</span>

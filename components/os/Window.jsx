@@ -9,10 +9,14 @@ export default function Window({ win, isActive, onFocus, onClose, onMinimize, on
   return (
     <div
       onClick={(e) => { e.stopPropagation(); onFocus(win.id); }}
-      className={`absolute rounded-[14px] overflow-hidden flex flex-col border ${isActive ? "border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)]" : "border-white/[0.07] shadow-[0_12px_36px_rgba(0,0,0,0.45)] opacity-[0.99]"}`}
+      className={`absolute overflow-hidden flex flex-col border ${win.isMaximized
+        ? "rounded-none border-transparent"
+        : isActive
+          ? "rounded-[14px] border-white/[0.12] shadow-[0_20px_60px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)]"
+          : "rounded-[14px] border-white/[0.07] shadow-[0_12px_36px_rgba(0,0,0,0.45)] opacity-[0.99]"}`}
       style={{
         left: win.isMaximized ? 0 : win.x,
-        top: win.isMaximized ? 28 : win.y,
+        top: win.isMaximized ? 0 : win.y,
         width: win.w,
         height: win.h,
         zIndex: win.z,

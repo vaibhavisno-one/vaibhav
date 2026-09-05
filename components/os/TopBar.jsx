@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Wifi, Battery, Volume2, VolumeX, Volume1 } from "lucide-react";
 import { sounds, setMasterVolume } from "@/lib/os/sounds";
 
-export default function TopBar({ timeStr, activeApp = "Projects", overviewOpen, calendarOpen, quickOpen, onOverview, onCalendar, onQuick, onSearch, onVosMenu, onBattery, onWifi, showToast, onOpenApp, onShutdown, onLock, volume = 78, setVolume }) {
+export default function TopBar({ timeStr, activeApp = "Portfolio", overviewOpen, calendarOpen, quickOpen, onOverview, onCalendar, onQuick, onSearch, onVosMenu, onBattery, onWifi, showToast, onOpenApp, onShutdown, onLock, volume = 78, setVolume }) {
   const [vosOpen, setVosOpen] = useState(false);
   const [showVol, setShowVol] = useState(false);
   const [localVol, setLocalVol] = useState(volume);
@@ -95,7 +95,21 @@ export default function TopBar({ timeStr, activeApp = "Projects", overviewOpen, 
 
         <AnimatePresence>
           {vosOpen && (
+              <motion.div
+                key="vos-backdrop"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="absolute top-7 left-0 w-screen h-[calc(100vh-28px)] z-40 cursor-default"
+                onClick={(e) => { e.stopPropagation(); setVosOpen(false); }}
+              />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {vosOpen && (
             <motion.div
+              key="vos-menu"
               initial={{ opacity: 0, scale: 0.97, y: -6 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: -6 }}

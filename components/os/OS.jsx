@@ -46,7 +46,7 @@ function renderAppContent(appId, payload, helpers) {
   if (norm === "browser") return <BrowserApp initialUrl={payload?.url} />;
   if (norm === "terminal") return <TerminalApp onOpenApp={helpers.openApp} onOpenBrowser={helpers.openBrowser} onWallpaper={(idx)=> helpers.setWallpaperIdx(idx)} wallpapers={WALLPAPERS} />;
   if (norm === "notes") return <NotesApp onOpenBrowser={(url) => helpers.openBrowser(url)} />;
-  if (norm === "settings") return <SettingsApp settings={helpers.settings} setSettings={helpers.setSettings} wallpapers={WALLPAPERS} wallpaperIdx={helpers.wallpaperIdx} setWallpaperIdx={helpers.setWallpaperIdx} />;
+  if (norm === "settings") return <SettingsApp settings={helpers.settings} setSettings={helpers.setSettings} wallpapers={WALLPAPERS} wallpaperIdx={helpers.wallpaperIdx} setWallpaperIdx={helpers.setWallpaperIdx} brightness={helpers.brightness} setBrightness={helpers.setBrightness} />;
   return <Comp onOpenApp={helpers.openApp} />;
 }
 
@@ -193,7 +193,7 @@ export default function OS() {
       const w = 900, h = 560;
       const vw = window.innerWidth, vh = window.innerHeight;
       const x = Math.max(12, (vw - w) / 2 + (Math.random() * 80 - 40));
-      const y = Math.max(24 + 12, (vh - h) / 2 + (Math.random() * 40 - 20));
+      const y = Math.max(12, (vh - 28 - h) / 2 + (Math.random() * 40 - 20));
       const nw = { id: idx, appId: norm, title: def?.name || norm, x, y, w, h, z: nextZ, isMinimized: false, isMaximized: false, prev: null, payload: opts };
       setActiveId(idx);
       setNextZ((z) => z + 1);
@@ -218,7 +218,7 @@ export default function OS() {
         const p = w.prev || { x: 100, y: 80, w: 900, h: 560 };
         return { ...w, isMaximized: false, x: p.x, y: p.y, w: p.w, h: p.h, prev: null };
       }
-      return { ...w, isMaximized: true, prev: { x: w.x, y: w.y, w: w.w, h: w.h }, x: 0, y: 28, w: window.innerWidth, h: window.innerHeight - 28 };
+      return { ...w, isMaximized: true, prev: { x: w.x, y: w.y, w: w.w, h: w.h }, x: 0, y: 0, w: window.innerWidth, h: window.innerHeight - 28 };
     })); };
   const focusWindow = (id) => {
     try { sounds.click(volume); } catch {}
@@ -239,8 +239,8 @@ export default function OS() {
         if (w.id !== id) return w;
         if (type === "move") {
           if (w.isMaximized) return w;
-          // allow window to sink under dock - only clamp to viewport, not dock
-          return { ...w, x: orig.x + dx, y: Math.max(28, orig.y + dy) };
+          // coords are relative to the desktop area (below the top bar)
+          return { ...w, x: orig.x + dx, y: Math.max(0, orig.y + dy) };
         }
         let nx = orig.x, ny = orig.y, nw = orig.w, nh = orig.h;
         if (type.includes("e")) nw = Math.max(360, orig.w + dx);
@@ -248,9 +248,9 @@ export default function OS() {
         if (type.includes("w")) { nw = Math.max(360, orig.w - dx); nx = orig.x + dx; }
         if (type.includes("n")) { nh = Math.max(260, orig.h - dy); ny = orig.y + dy; }
         if (nx < 0) { nw += nx; nx = 0; }
-        if (ny < 28) { nh += ny - 28; ny = 28; }
-        // allow resize to go under dock - clamp only to viewport bottom
-        if (ny + nh > window.innerHeight) nh = Math.max(260, window.innerHeight - ny);
+        if (ny < 0) { nh += ny; ny = 0; }
+        // allow resize to go under dock - clamp only to desktop bottom
+        if (ny + nh > window.innerHeight - 28) nh = Math.max(260, window.innerHeight - 28 - ny);
         if (nx + nw > window.innerWidth) nw = window.innerWidth - nx;
         return { ...w, x: nx, y: ny, w: nw, h: nh, isMaximized: false };
       }));
@@ -277,7 +277,7 @@ export default function OS() {
   }, [windows, dockHover, settings.dockSize]);
   const activeAppName = useMemo(() => {
     const win = windows.find((w) => w.id === activeId && !w.isMinimized);
-    if (!win) return "Projects";
+    if (!win) return "Portfolio";
     const def = getApp(win.appId);
     return def?.name || win.title;
   }, [windows, activeId]);
@@ -342,6 +342,9 @@ export default function OS() {
         showToast={showToast}
         volume={volume}
         setVolume={setVolume}
+        onOpenApp={openApp}
+        onShutdown={doShutdown}
+        onLock={doLock}
       />
 
       <AnimatePresence>
@@ -391,7 +394,7 @@ export default function OS() {
                   dragRef.current = { id: win.id, type: dir, startX: e.clientX, startY: e.clientY, orig: { x: win.x, y: win.y, w: win.w, h: win.h } };
                 }}
               >
-                {renderAppContent(w.appId, w.payload, { openApp, openBrowser, settings, setSettings, wallpaperIdx, setWallpaperIdx })}
+                {renderAppContent(w.appId, w.payload, { openApp, openBrowser, settings, setSettings, wallpaperIdx, setWallpaperIdx, brightness, setBrightness })}
               </Window>
             </motion.div>
           ))}
