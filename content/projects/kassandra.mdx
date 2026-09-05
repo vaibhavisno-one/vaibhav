@@ -1,0 +1,66 @@
+---
+slug: "kassandra"
+title: "Kassandra"
+description: "A Universal Sentiment Engine for Stock Predictionp."
+status: "In Production"
+timeline: "1 month"
+role: "Full Stack Developer"
+team: "Startup Core Team"
+website: "https://kassandra-eight.vercel.app/"
+github: "https://github.com/vaibhavisno-one/Kassandra"
+image: "/projects/kassandra.png"
+technologies:
+- Python 3.8+
+- pandas
+- numpy
+- scikit-learn (RandomForestRegressor)
+
+---
+
+## Overview
+
+Project Kassandra is a stock price prediction pipeline that combines traditional technical analysis with multi-source sentiment data. The system fetches live market data, aggregates sentiment signals from news, Wikipedia, and Google Trends, and uses machine learning to predict next-day closing prices.
+
+## Features
+
+- **Live Data Fetching**: Historical stock prices via yfinance
+- **Technical Indicators**: Moving averages, volatility, daily returns
+- **Multi-Source Sentiment**:
+  - News sentiment (Google News RSS + VADER)
+  - Wikipedia pageview trends
+  - Google Trends search interest
+- **Explainable Fusion**: Fixed-weight sentiment aggregation (0.4 news, 0.3 trends, 0.3 wiki)
+- **Rolling Predictions**: Day-by-day training with no future data leakage
+- **CSV Artifacts**: Exportable features and prediction logs
+
+
+## Tech Stack
+
+- Python 3.8+
+- pandas, numpy
+- scikit-learn (RandomForestRegressor)
+- feedparser, nltk (news sentiment)
+
+
+
+## Future Plans
+
+- Payment gateway expansion.
+- Analytics dashboard.
+- Microservices migration.
+
+
+## Limitations & Future Work
+
+**Current Limitations**:
+- News sentiment limited to recent articles (Google News RSS)
+- Google Trends data may have rate limits
+- Model uses fixed hyperparameters (no tuning)
+- Single-day prediction horizon
+
+**Future Enhancements**:
+- Hyperparameter optimization
+- Multi-day forecasting
+- Additional sentiment sources (Twitter, Reddit)
+- Deep learning models
+- Real-time prediction API

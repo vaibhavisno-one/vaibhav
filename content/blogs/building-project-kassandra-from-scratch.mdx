@@ -1,0 +1,252 @@
+---
+slug: "building-project-kassandra-from-scratch"
+title: "Building a Sentiment Engine"
+description: "A practical walkthrough of Project Kassandra, explaining the intuition behind alternative data, sentiment pipelines, and how to build a reproducible stock prediction system from scratch."
+date: "2026-01-13"
+tags:
+  - Machine Learning
+  - Data Engineering
+  - Finance
+  - Stock Prediction
+  - FastAPI
+cover: "/blogs/kassandra.png"
+readingTime: "12 min read"
+---
+
+## Introduction – Why Project Kassandra Exists
+
+Most beginner stock prediction projects fail for one simple reason:  
+they treat the market like a math problem instead of a **human system**.
+
+Prices move not only because of indicators, but because of **attention, fear, hype, and belief**. Project Kassandra was built to explore this idea in a structured, engineering-first way — by combining traditional price data with **alternative sentiment signals** such as news, search interest, and public curiosity.
+
+This article explains the *intuition*, *architecture*, and *design decisions* behind Kassandra, so that you can build it yourself and understand *why each step matters*.
+
+---
+
+## What Problem Are We Solving?
+
+Traditional models use only OHLCV data:
+- Open
+- High
+- Low
+- Close
+- Volume
+
+While useful, these signals are **reactive**. By the time price moves, the event has often already happened.
+
+Kassandra asks a different question:
+
+> Can we quantify public attention and sentiment **before or during** price movement?
+
+To answer that, we design a pipeline that converts **human behavior** into **numerical features**.
+
+---
+
+## High-Level Architecture
+
+At a high level, Project Kassandra has four layers:
+
+1. **Raw Data Collection**
+2. **Feature Engineering**
+3. **Model Training & Evaluation**
+4. **Prediction + Visualization**
+
+Phase 1 focuses only on layers **1 and 2** — because bad data guarantees a bad model.
+
+---
+
+## Step 1: Historical Price Data (The Backbone)
+
+Every prediction system needs a stable reference. In Kassandra, that reference is historical stock price data fetched using `yfinance`.
+
+### Why price data is still essential
+- Defines valid **trading days**
+- Anchors all alternative data temporally
+- Provides ground truth for evaluation
+
+We fetch:
+- Open, High, Low, Close
+- Volume
+- One year lookback (≈252 trading days)
+
+All other data sources are aligned *to these trading days* to avoid leakage.
+
+---
+
+## Step 2: News Sentiment – Capturing Market Narrative
+
+Markets react strongly to **stories**:
+- Earnings beats or misses
+- Regulatory pressure
+- Product announcements
+- CEO statements
+
+### Data source
+- Financial news aggregators (NewsAPI or equivalent)
+
+### Feature intuition
+Instead of predicting from individual headlines, we aggregate **daily sentiment**:
+
+- **news_count** – how much attention exists
+- **sentiment_score** – average polarity (-1 → +1)
+- **sentiment_delta** – change in mood
+- **sentiment_ma7** – smoothed signal
+
+This allows the model to learn patterns like:
+> “Rapid increase in negative sentiment often precedes volatility”
+
+Even when news is noisy, *changes in sentiment* carry meaning.
+
+---
+
+## Step 3: Google Trends – Measuring Public Attention
+
+Search behavior reflects curiosity *before* action.
+
+When people suddenly search for:
+- “Tesla earnings”
+- “Is TSLA overvalued?”
+- “Buy Tesla stock?”
+
+…it often signals **retail interest building up**.
+
+### Why Google Trends matters
+- Captures hype cycles
+- Detects abnormal attention spikes
+- Complements price momentum
+
+### Engineered features
+- **trends_interest** (0–100)
+- **trends_delta**
+- **trends_ma7**
+
+Trends does not tell us direction — but it tells us **intensity**.
+
+---
+
+## Step 4: Wikipedia Pageviews – Curiosity Without Intent
+
+Wikipedia is underrated.
+
+People visit Wikipedia when they:
+- Want context
+- Read background
+- Try to understand *why* something is happening
+
+This makes it a strong proxy for **information-seeking behavior**.
+
+### Features created
+- **wiki_views**
+- **wiki_delta**
+- **wiki_ma7**
+
+Unlike trends, Wikipedia spikes often correlate with **events**, not hype — making it a stabilizing signal.
+
+---
+
+## Step 5: Feature Engineering Philosophy
+
+Raw data is useless to models.
+
+Kassandra follows four core feature principles:
+
+### 1. Counts capture volume  
+News count, pageviews, trend scores show *how much* attention exists.
+
+### 2. Deltas capture momentum  
+Day-over-day changes show acceleration or decay.
+
+### 3. Moving averages reduce noise  
+Markets are noisy; smoothing exposes structure.
+
+### 4. No normalization in Phase 1  
+Keeping natural scales improves interpretability and auditability.
+
+---
+
+## Preventing Temporal Leakage (The Most Important Part)
+
+Temporal leakage is the silent killer of ML projects.
+
+Kassandra prevents it by design:
+
+- All data is aligned strictly by **Date**
+- No feature uses future information
+- Moving averages only look backwards
+- Non-trading days are forward-filled *only historically*
+
+This ensures that any future performance is **real**, not accidental.
+
+---
+
+## Why Phase 1 Stops Before Modeling
+
+A common mistake is jumping into models too early.
+
+Phase 1 intentionally stops at:
+- A single, clean CSV
+- Fully engineered features
+- Clear provenance for every column
+
+This makes Phase 2:
+- Easier to debug
+- Easier to explain
+- Easier to trust
+
+A bad model can be fixed.  
+A bad dataset cannot.
+
+---
+
+## Expected Benefits (and Limitations)
+
+### What we expect to gain
+- Better handling of news-driven volatility
+- Improved short-term awareness
+- Stronger interpretability
+
+### What this will *not* do
+- Predict black swan events
+- Replace fundamental analysis
+- Guarantee profits
+
+Kassandra is an **engineering experiment**, not a trading bot.
+
+---
+
+## Why This Project Is Developer-First
+
+Kassandra is designed to be:
+- Modular
+- Reproducible
+- Auditable
+- Extendable
+
+Every data source can be swapped.
+Every feature can be traced.
+Every prediction can be explained.
+
+This makes it suitable for:
+- Hackathons
+- Research
+- Portfolio review
+- Real-world iteration
+
+---
+
+## Conclusion
+
+Project Kassandra demonstrates how stock prediction becomes more meaningful when we treat markets as **human systems**, not just price series.
+
+By converting attention, sentiment, and curiosity into numerical signals — and doing so *without leakage* — we build a foundation that is both technically sound and intellectually honest.
+
+Phase 2 will test whether these signals actually improve predictions.  
+Phase 1 proves that the **data and intuition are solid**.
+
+---
+
+**Project**: Kassandra  
+**Phase**: 1 – Data Pipeline  
+**Focus**: Alternative Data & Feature Engineering  
+**Date**: January 2026

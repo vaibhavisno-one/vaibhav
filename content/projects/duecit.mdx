@@ -1,0 +1,60 @@
+---
+slug: "duecit"
+title: "DuecIt"
+description: "Real-time 1v1 coding duels with ELO-based matchmaking, synchronized start times, and dual game modes."
+status: "Completed"
+timeline: "6 months"
+role: "Full Stack Developer"
+team: "Solo"
+github: "https://github.com/vaibhavisno-one/duecIt"
+image: "/projects/duecit.svg"
+technologies:
+  - Go
+  - Next.js
+  - TypeScript
+  - WebSockets
+  - MongoDB
+  - Redis
+  - Monaco Editor
+  - Docker
+---
+
+## Overview
+
+DuecIt is a real-time 1v1 coding duel platform where developers face off on DSA and database problems. Players queue into ELO-based matchmaking (±200 rating window), get a server-synced start, and race through a 45-second reading phase into 10 minutes of coding. The match ends when both players submit or time runs out.
+
+## What Users Can Do
+
+- **Duel Live**: Queue into matchmaking and get paired with a similarly-rated opponent.
+- **Two Modes**: Competitive rated duels or relaxed Practice mode with a Codeforces-style UI.
+- **Code Together, Apart**: Monaco editor with per-player language selection and synchronized timers.
+- **Track Growth**: Profile pages with rating history and recent duels.
+- **Sign In Easily**: OAuth login via Google and GitHub, plus email password reset.
+- **Run the Arena**: Admin portal with monitoring, problem and test-case management.
+
+## Why I Built This
+
+- To learn real-time systems: WebSockets, synchronized clocks, and race-free match ends.
+- To design a fair rating system with category-specific DSA and DB ratings.
+- To run a full judging pipeline on self-hosted infrastructure with Docker and Piston.
+- To ship a complete product: auth, payments of attention (ratings), admin tooling, and docs.
+
+## Tech Stack
+
+- Go (REST API + WebSockets)
+- Next.js + TypeScript (duel UI, Monaco editor, admin panel)
+- MongoDB, Redis
+- Docker Compose (Mongo, Redis, self-hosted Piston judge)
+- OAuth (Google, GitHub), SMTP password reset
+
+## After Launch & Impact
+
+- 59 commits across backend, frontend, and infrastructure over 6 months.
+- Seeded problem bank with bulk import tooling (easy / medium / hard, append or overwrite).
+- Learned to operate a judge: language runtimes, sandboxing, and production VPS setup.
+
+## Future Plans
+
+- Public deployment with seasonal rating ladders.
+- Spectator mode for live duels.
+- Team duels and tournament brackets.
