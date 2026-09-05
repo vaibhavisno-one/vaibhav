@@ -1,0 +1,65 @@
+<svg width="640" height="400" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DuecIt cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101018"/>
+      <stop offset="1" stop-color="#0A0A10"/>
+    </linearGradient>
+    <linearGradient id="goldbar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C9A84C"/>
+      <stop offset="1" stop-color="#E8C55A"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#bg)"/>
+  <!-- subtle grid -->
+  <g stroke="#FFFFFF" stroke-opacity="0.05">
+    <line x1="0" y1="100" x2="640" y2="100"/><line x1="0" y1="200" x2="640" y2="200"/>
+    <line x1="0" y1="300" x2="640" y2="300"/><line x1="160" y1="0" x2="160" y2="400"/>
+    <line x1="320" y1="0" x2="320" y2="400"/><line x1="480" y1="0" x2="480" y2="400"/>
+  </g>
+  <!-- header bar -->
+  <rect x="48" y="36" width="544" height="52" rx="12" fill="#17171C" stroke="#FFFFFF" stroke-opacity="0.1"/>
+  <circle cx="76" cy="62" r="6" fill="#C85450"/><circle cx="94" cy="62" r="6" fill="#D6C5A8"/><circle cx="112" cy="62" r="6" fill="#7AF05A"/>
+  <text x="320" y="68" text-anchor="middle" font-family="monospace" font-size="17" letter-spacing="3" fill="#EDE9E1">DUECIT — DUEL #042</text>
+  <!-- left pane (you) -->
+  <g>
+    <rect x="48" y="104" width="252" height="216" rx="12" fill="#141419" stroke="#7AF05A" stroke-opacity="0.4"/>
+    <rect x="48" y="104" width="252" height="34" rx="12" fill="#1B1B21"/>
+    <rect x="48" y="124" width="252" height="14" fill="#1B1B21"/>
+    <circle cx="66" cy="121" r="7" fill="#7AF05A"/>
+    <text x="82" y="126" font-family="monospace" font-size="13" fill="#EDE9E1">YOU · 1642</text>
+    <text x="252" y="126" text-anchor="end" font-family="monospace" font-size="13" fill="#7AF05A">● live</text>
+    <g font-family="monospace" font-size="13">
+      <text x="66" y="164" fill="#8F8A83">1  <tspan fill="#7AA2F7">func</tspan> <tspan fill="#EDE9E1">twoSum</tspan>() {</text>
+      <text x="66" y="186" fill="#8F8A83">2    <tspan fill="#7AA2F7">for</tspan> <tspan fill="#EDE9E1">i, v := range nums</tspan> {</text>
+      <text x="66" y="208" fill="#8F8A83">3      <tspan fill="#7AA2F7">if</tspan> <tspan fill="#EDE9E1">seen[target-v]</tspan> {</text>
+      <text x="66" y="230" fill="#8F8A83">4        <tspan fill="#7AA2F7">return</tspan> <tspan fill="#EDE9E1">[]int{i, seen…}</tspan></text>
+      <text x="66" y="252" fill="#8F8A83">5      }</text>
+      <text x="66" y="274" fill="#8F8A83">6    }</text>
+      <text x="66" y="296" fill="#8F8A83">7  }</text>
+    </g>
+  </g>
+  <!-- right pane (rival) -->
+  <g>
+    <rect x="340" y="104" width="252" height="216" rx="12" fill="#141419" stroke="#C85450" stroke-opacity="0.45"/>
+    <rect x="340" y="104" width="252" height="34" rx="12" fill="#1B1B21"/>
+    <rect x="340" y="124" width="252" height="14" fill="#1B1B21"/>
+    <circle cx="358" cy="121" r="7" fill="#C85450"/>
+    <text x="374" y="126" font-family="monospace" font-size="13" fill="#EDE9E1">RIVAL · 1598</text>
+    <text x="544" y="126" text-anchor="end" font-family="monospace" font-size="13" fill="#C85450">● live</text>
+    <rect x="358" y="152" width="150" height="12" rx="6" fill="#FFFFFF" opacity="0.14"/>
+    <rect x="358" y="172" width="200" height="12" rx="6" fill="#FFFFFF" opacity="0.1"/>
+    <rect x="358" y="192" width="120" height="12" rx="6" fill="#FFFFFF" opacity="0.14"/>
+    <rect x="358" y="212" width="180" height="12" rx="6" fill="#FFFFFF" opacity="0.08"/>
+    <rect x="358" y="232" width="140" height="12" rx="6" fill="#FFFFFF" opacity="0.12"/>
+    <rect x="358" y="252" width="190" height="12" rx="6" fill="#FFFFFF" opacity="0.08"/>
+    <rect x="358" y="272" width="110" height="12" rx="6" fill="#FFFFFF" opacity="0.12"/>
+  </g>
+  <!-- VS badge -->
+  <circle cx="320" cy="212" r="30" fill="#0A0A0E" stroke="url(#goldbar)" stroke-width="3"/>
+  <text x="320" y="222" text-anchor="middle" font-family="Georgia, serif" font-weight="900" font-size="22" fill="#E8C55A">VS</text>
+  <!-- bottom strip -->
+  <rect x="48" y="336" width="544" height="40" rx="12" fill="#17171C" stroke="#FFFFFF" stroke-opacity="0.1"/>
+  <text x="70" y="361" font-family="monospace" font-size="14" fill="#E8C55A">⏱ 07:42</text>
+  <text x="320" y="361" text-anchor="middle" font-family="monospace" font-size="14" fill="#A8A29E">ELO ±200 · DSA / DB pools</text>
+  <text x="570" y="361" text-anchor="end" font-family="monospace" font-size="14" fill="#7AF05A">2/2 ✓</text>
+</svg>
